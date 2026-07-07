@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum DocumentRole {
+  OWNER
+  EDITOR
+  VIEWER
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ownedDocuments Document[]           @relation("DocumentOwner")
+  permissions    DocumentPermission[]
+  versions       DocumentVersion[]
+  comments       Comment[]
+}
+
+model Document {
+  id        String   @id @default(cuid())
+  title     String   @default("Untitled document")
+  content   Json?
+  ownerId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  owner       User                 @relation("DocumentOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  permissions DocumentPermission[]
+  versions    DocumentVersion[]
+  comments    Comment[]
+}
+
+model DocumentPermission {
+  id         String       @id @default(cuid())
+  documentId String
+  userId     String
+  role       DocumentRole
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([documentId, userId])
+}
+
+model DocumentVersion {
+  id          String   @id @default(cuid())
+  documentId  String
+  createdById String
+  title       String
+  content     Json?
+  createdAt   DateTime @default(now())
+
+  document  Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  createdBy User     @relation(fields: [createdById], references: [id], onDelete: Cascade)
+}
+
+model Comment {
+  id           String   @id @default(cuid())
+  documentId   String
+  userId       String
+  text         String
+  selectedText String?
+  resolved     Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
