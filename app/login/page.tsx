@@ -1,43 +1,35 @@
 import Link from "next/link";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { Input } from "@/components/ui/Input";
 
 export default function LoginPage() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-slate-950 px-6 text-white">
-      <div className="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900 p-8 shadow-xl">
+      <Card className="w-full max-w-md">
         <h1 className="text-3xl font-bold">Welcome back</h1>
         <p className="mt-2 text-sm text-slate-400">
           Log in to continue working on your documents.
         </p>
 
         <form className="mt-8 space-y-5">
-          <div>
-            <label className="text-sm font-medium text-slate-300">
-              Email
-            </label>
-            <input
-              type="email"
-              placeholder="you@example.com"
-              className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition focus:border-white"
-            />
-          </div>
+          <Input
+            label="Email"
+            type="email"
+            placeholder="you@example.com"
+            autoComplete="email"
+          />
 
-          <div>
-            <label className="text-sm font-medium text-slate-300">
-              Password
-            </label>
-            <input
-              type="password"
-              placeholder="••••••••"
-              className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition focus:border-white"
-            />
-          </div>
+          <Input
+            label="Password"
+            type="password"
+            placeholder="••••••••"
+            autoComplete="current-password"
+          />
 
-          <button
-            type="submit"
-            className="w-full rounded-lg bg-white px-4 py-3 font-medium text-slate-950 transition hover:bg-slate-200"
-          >
+          <Button type="submit" className="w-full">
             Log in
-          </button>
+          </Button>
         </form>
 
         <p className="mt-6 text-center text-sm text-slate-400">
@@ -46,7 +38,7 @@ export default function LoginPage() {
             Create one
           </Link>
         </p>
-      </div>
+      </Card>
     </main>
   );
 }

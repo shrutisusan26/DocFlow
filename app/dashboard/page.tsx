@@ -1,4 +1,7 @@
 import Link from "next/link";
+import { AppHeader } from "@/components/AppHeader";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
 
 const sampleDocuments = [
   {
@@ -21,17 +24,7 @@ const sampleDocuments = [
 export default function DashboardPage() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">
-      <header className="border-b border-slate-800">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
-          <Link href="/" className="text-xl font-bold">
-            DocFlow
-          </Link>
-
-          <button className="rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-300 transition hover:bg-slate-900">
-            Log out
-          </button>
-        </div>
-      </header>
+      <AppHeader showLogout />
 
       <section className="mx-auto max-w-6xl px-6 py-10">
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
@@ -42,22 +35,18 @@ export default function DashboardPage() {
             </p>
           </div>
 
-          <button className="rounded-lg bg-white px-5 py-3 font-medium text-slate-950 transition hover:bg-slate-200">
-            New document
-          </button>
+          <Button>New document</Button>
         </div>
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {sampleDocuments.map((document) => (
-            <Link
-              key={document.id}
-              href={`/documents/${document.id}`}
-              className="rounded-2xl border border-slate-800 bg-slate-900 p-6 transition hover:border-slate-600"
-            >
-              <h2 className="text-lg font-semibold">{document.title}</h2>
-              <p className="mt-3 text-sm text-slate-400">
-                {document.updatedAt}
-              </p>
+            <Link key={document.id} href={`/documents/${document.id}`}>
+              <Card className="h-full p-6 transition hover:border-slate-600">
+                <h2 className="text-lg font-semibold">{document.title}</h2>
+                <p className="mt-3 text-sm text-slate-400">
+                  {document.updatedAt}
+                </p>
+              </Card>
             </Link>
           ))}
         </div>

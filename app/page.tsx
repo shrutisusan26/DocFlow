@@ -1,9 +1,12 @@
-import Link from "next/link";
+import { AppHeader } from "@/components/AppHeader";
+import { LinkButton } from "@/components/ui/Button";
 
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">
-      <section className="mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-6 text-center">
+      <AppHeader />
+
+      <section className="mx-auto flex min-h-[calc(100vh-81px)] max-w-6xl flex-col items-center justify-center px-6 text-center">
         <div className="mb-6 rounded-full border border-slate-700 px-4 py-2 text-sm text-slate-300">
           Real-time document collaboration for modern teams
         </div>
@@ -19,19 +22,10 @@ export default function HomePage() {
         </p>
 
         <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-          <Link
-            href="/register"
-            className="rounded-lg bg-white px-6 py-3 font-medium text-slate-950 transition hover:bg-slate-200"
-          >
-            Get started
-          </Link>
-
-          <Link
-            href="/login"
-            className="rounded-lg border border-slate-700 px-6 py-3 font-medium text-white transition hover:bg-slate-900"
-          >
+          <LinkButton href="/register">Get started</LinkButton>
+          <LinkButton href="/login" variant="secondary">
             Log in
-          </Link>
+          </LinkButton>
         </div>
       </section>
     </main>
