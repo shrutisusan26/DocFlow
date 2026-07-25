@@ -1,4 +1,9 @@
+"use client";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
 import { Button } from "./ui/Button";
 
 type AppHeaderProps = {
@@ -6,6 +11,29 @@ type AppHeaderProps = {
 };
 
 export function AppHeader({ showLogout = false }: AppHeaderProps) {
+  const router = useRouter();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  async function handleLogout() {
+    setIsLoggingOut(true);
+
+    try {
+      const response = await fetch("/api/auth/logout", {
+        method: "POST",
+      });
+
+      if (!response.ok) {
+        throw new Error("Logout failed");
+      }
+
+      router.push("/login");
+      router.refresh();
+    } catch (error) {
+      console.error("Logout error:", error);
+      setIsLoggingOut(false);
+    }
+  }
+
   return (
     <header className="border-b border-slate-800 bg-slate-950 text-white">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
@@ -14,7 +42,13 @@ export function AppHeader({ showLogout = false }: AppHeaderProps) {
         </Link>
 
         {showLogout ? (
-          <Button variant="ghost">Log out</Button>
+          <Button
+            variant="ghost"
+            onClick={handleLogout}
+            disabled={isLoggingOut}
+          >
+            {isLoggingOut ? "Logging out..." : "Log out"}
+          </Button>
         ) : (
           <div className="flex items-center gap-3">
             <Link
